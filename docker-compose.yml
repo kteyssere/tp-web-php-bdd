@@ -1,0 +1,36 @@
+version: '3'
+services:
+  php:
+    image: php:7.4-fpm
+    volumes:
+      - ./php:/var/www/html
+    container_name: php
+
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    ports:
+      - "8080:80"  # Utilisation du port 8080 pour Nginx
+    volumes:
+      - ./php:/var/www/html
+    depends_on:
+      - php
+
+  db:
+    image: mariadb:latest  # Utilisation de l'image MariaDB
+    container_name: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pswd  # Mot de passe root pour MySQL/MariaDB
+      MYSQL_DATABASE: mydatabase  # Nom de la base de données à créer
+      MYSQL_USER: test  # Utilisateur pour accéder à la base de données
+      MYSQL_PASSWORD: pswd  # Mot de passe de l'utilisateur
+    ports:
+      - "3306:3306"  # Mapping du port MySQL/MariaDB
+    volumes:
+      - mariadb_data:/var/lib/mysql  # Volume pour stocker les données de la base de données
+
+volumes:
+  mariadb_data:
+    driver: local
