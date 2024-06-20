@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Utilise une machine Ubuntu comme environnement de build
+    runs-on: self-hosted
 
     steps:
     - name: Checkout repository  # Étape pour récupérer le code source
